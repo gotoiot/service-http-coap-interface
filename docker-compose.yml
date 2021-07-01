@@ -3,23 +3,15 @@ version: '3'
 services:
 
   http-coap-interface:
-    build:
-      context:        ./http-coap-interface
-      dockerfile:     Dockerfile
-    hostname:         http-coap-interface
-    container_name:   http-coap-interface
-    network_mode:     host
-    volumes:
-      -               ./http-coap-interface/src:/usr/src/app
+    build: .
     ports:
-      -               "5000:5000"
-    command:          python3 app.py
-
-  http-to-coap-web-client:
-    image:            httpd:2.4
-    hostname:         http-to-coap-web-client
-    container_name:   http-to-coap-web-client
+      - "5000:5000"
+    env_file:
+      - env
     volumes:
-        -             ./http-to-coap-web-client:/usr/local/apache2/htdocs/
+      - ./_service_storage:/app/_service_storage
+    expose:
+      - "5000"
     ports:
-      -               "5001:80"
+      - "5000:5000"
+    network_mode: host
