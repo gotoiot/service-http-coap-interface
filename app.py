@@ -8,8 +8,7 @@ from flask_gzip import Gzip
 
 from config import PORT, ENV, config_get_current_settings_as_list
 from log import error, warn, info, debug
-from ibeacon_scanner.resources import ibeacon_add_http_resources_to_api
-from ibeacon_scanner.services import ibeacon_init_scanner, ibeacon_stop_scanner
+from http_coap_interface.resources import http_coap_interface_add_http_resources_to_api
 
 
 application = Flask(
@@ -81,7 +80,7 @@ def _show_welcome_message():
 def _init_application():
     _show_welcome_message()
     info("Starting to run HTTP-CoAP Interface Service")
-    # ibeacon_add_http_resources_to_api(flask_restful_api, prefix="/ibeacon_scanner")
+    http_coap_interface_add_http_resources_to_api(flask_restful_api, prefix="/http_coap")
 
 
 _init_application()

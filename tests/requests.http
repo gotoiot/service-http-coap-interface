@@ -1,16 +1,16 @@
-@host_api = http://localhost:5100
-@api_prefix = api/v1
+@host_api = http://localhost:5000
+@api_prefix = http_coap
 
-GET {{host_api}}/{{api_prefix}}/
+GET {{host_api}}/status
 
 
 ### GET BUTTON STATE
 
-PUT {{host_api}}/{{api_prefix}}/http_to_coap/
+PUT {{host_api}}/{{api_prefix}}/interface
 content-type: application/json
 
 {
-    "coap_server_ip" : "192.168.1.37",
+    "coap_server_ip" : "192.168.0.103",
     "coap_server_port" : 5683,
     "coap_server_resource" : "button",
     "coap_method" : "get"
@@ -19,11 +19,11 @@ content-type: application/json
 
 ### GET LIGHT STATE
 
-PUT {{host_api}}/{{api_prefix}}/http_to_coap/
+PUT {{host_api}}/{{api_prefix}}/interface
 content-type: application/json
 
 {
-    "coap_server_ip" : "192.168.1.37",
+    "coap_server_ip" : "192.168.0.103",
     "coap_server_port" : 5683,
     "coap_server_resource" : "light",
     "coap_method" : "get"
@@ -32,23 +32,23 @@ content-type: application/json
 
 ### SET LIGHT STATE
 
-PUT {{host_api}}/{{api_prefix}}/http_to_coap/
+PUT {{host_api}}/{{api_prefix}}/interface
 content-type: application/json
 
 {
-    "coap_server_ip" : "192.168.1.37",
+    "coap_server_ip" : "192.168.0.103",
     "coap_server_port" : 5683,
     "coap_server_resource" : "light",
     "coap_method" : "put",
     "coap_payload" : {
-        "light": false
+        "light": true
     }
 }
 
 
 ### SEND INVALID COAP REQUEST
 
-PUT {{host_api}}/{{api_prefix}}/http_to_coap/
+PUT {{host_api}}/{{api_prefix}}/interface/
 content-type: application/json
 
 {
@@ -57,16 +57,16 @@ content-type: application/json
 
 ### SEND INVALID REQUEST (WITHOUT REQUEST BODY)
 
-PUT {{host_api}}/{{api_prefix}}/http_to_coap/
+PUT {{host_api}}/{{api_prefix}}/interface/
 
 
 ### SEND BAD REQUEST OVER LIGHT RESOURCE
 
-PUT {{host_api}}/{{api_prefix}}/http_to_coap/
+PUT {{host_api}}/{{api_prefix}}/interface/
 content-type: application/json
 
 {
-    "coap_server_ip" : "192.168.1.37",
+    "coap_server_ip" : "192.168.0.103",
     "coap_server_port" : 5683,
     "coap_server_resource" : "light",
     "coap_method" : "put",
@@ -76,11 +76,11 @@ content-type: application/json
 
 ### SEND NOT ALLOWED (POST) REQUEST OVER LIGHT RESOURCE
 
-PUT {{host_api}}/{{api_prefix}}/http_to_coap/
+PUT {{host_api}}/{{api_prefix}}/interface/
 content-type: application/json
 
 {
-    "coap_server_ip" : "192.168.1.37",
+    "coap_server_ip" : "192.168.0.103",
     "coap_server_port" : 5683,
     "coap_server_resource" : "light",
     "coap_method" : "post",
@@ -92,11 +92,11 @@ content-type: application/json
 
 ### SEND NOT ALLOWED (DELETE) REQUEST OVER LIGHT RESOURCE
 
-PUT {{host_api}}/{{api_prefix}}/http_to_coap/
+PUT {{host_api}}/{{api_prefix}}/interface/
 content-type: application/json
 
 {
-    "coap_server_ip" : "192.168.1.37",
+    "coap_server_ip" : "192.168.0.103",
     "coap_server_port" : 5683,
     "coap_server_resource" : "light",
     "coap_method" : "delete",
