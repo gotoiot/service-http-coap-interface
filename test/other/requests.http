@@ -4,6 +4,21 @@
 
 GET {{http_coap_interface_host}}/status
 
+###
+
+PUT {{http_coap_interface_host}}/{{api_prefix}}/test
+content-type: application/json
+
+{
+    "coap_server_ip" : "{{coap_server_ip}}",
+    "coap_server_port" : {{coap_server_port}},
+    "coap_server_resource" : "light",
+    "coap_method" : "put",
+    "coap_payload" : {
+        "light": true
+    }
+}
+
 ###############################################################################
 #
 # SPECIFIC TEST FOR COAP SERVER BASED IN EMBED IOT CORE PROJECT OF GOTO IOT.
