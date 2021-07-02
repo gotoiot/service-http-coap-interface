@@ -5,11 +5,13 @@ import logging
 import subprocess
 from subprocess import Popen, PIPE
 
-from http_coap_interface.events import *
+from log import error, warn, info, debug
 from event.services import publish_event
+from http_coap_interface.events import *
 
 
 def generate_invalid_coap_response(**kwargs):
+    debug(f"Generating invalid response for the kwargs: {kwargs}")
     return {
         "error" : "invalid data received from client",
         "received" : kwargs,
@@ -27,6 +29,7 @@ def generate_invalid_coap_response(**kwargs):
 
 
 def create_coap_fields_from_http_request(**kwargs):
+    debug(f"Creating CoAP request fields from HTTP request")
     return {
         "coap_server_ip" : kwargs.get("coap_server_ip", "INVALID"),
         "coap_server_resource" : kwargs.get("coap_server_resource", "INVALID"),
@@ -37,6 +40,7 @@ def create_coap_fields_from_http_request(**kwargs):
 
 
 def generate_test_coap_response(**kwargs):
+    debug(f"Generating CoAP test response")
     return {
         "message" : "Test HTTP-COAP Interface endpoint",
         "received" : kwargs,
@@ -84,12 +88,14 @@ def parse_coap_client_response(command_output):
         if isinstance(message_output, (int, float)):
             message_output = _process_status_message(str(message_output))
     except:
+        error(f"Error while parsing CoAP client response. Command output: {command_output}")
         message_output = splitted[1]
     total_info = splitted[0].split(" ")
     version = total_info[0].split(":")[1]
     message_type = total_info[1].split(":")[1]
     method = total_info[2].split(":")[1]
     message_id = total_info[3].split(":")[1]
+    debug(f"Parsing CoAP response from server: V={version}, T={message_type}, METHOD={method}, ID=0x{message_id}, OUT={message_output}")
     return {
         "version": version,
         "message_type": message_type,
@@ -149,9 +155,10 @@ def execute_coap_client_request(**kwargs):
     elif kwargs.get('coap_method') in ["put", "post"]:
         command_list = _create_put_or_post_command_list(method=kwargs.get('coap_method'))
     else:
-        print(f"Unsupported CoAP method")
+        error(f"Unsupported CoAP method")
         return generate_invalid_coap_response(**kwargs)
 
+    debug(f"Executing command: {command_list}")
     publish_event(HttpCoapRequest(command_list))
     command_output = subprocess.Popen(
         command_list, 

@@ -1,0 +1,120 @@
+# GENERAL USE OF HTTP TO COAP INTERFACE SERVICE TESTING
+@http_coap_interface_host = http://localhost:5000
+@api_prefix = http_coap
+
+GET {{http_coap_interface_host}}/status
+
+###############################################################################
+#
+# SPECIFIC TEST FOR COAP SERVER BASED IN EMBED IOT CORE PROJECT OF GOTO IOT.
+# FOR MORE INFO ABOUT THE EMBEDDED COAP SERVE PLEASE REFER TO ITS DOCUMENTATION 
+# IN THE NEXT LINK: 
+# https://github.com/gotoiot/embed-iot-core/tree/master/examples/coap/coap_server
+#
+###############################################################################
+
+### COAP SERVER SETTINGS
+
+@coap_server_ip = 192.168.0.103
+@coap_server_port = 5683
+
+### GET BUTTON STATE
+
+PUT {{http_coap_interface_host}}/{{api_prefix}}/interface
+content-type: application/json
+
+{
+    "coap_server_ip" : "{{coap_server_ip}}",
+    "coap_server_port" : {{coap_server_port}},
+    "coap_server_resource" : "button",
+    "coap_method" : "get"
+}
+
+
+### GET LIGHT STATE
+
+PUT {{http_coap_interface_host}}/{{api_prefix}}/interface
+content-type: application/json
+
+{
+    "coap_server_ip" : "{{coap_server_ip}}",
+    "coap_server_port" : {{coap_server_port}},
+    "coap_server_resource" : "light",
+    "coap_method" : "get"
+}
+
+
+### SET LIGHT STATE
+
+PUT {{http_coap_interface_host}}/{{api_prefix}}/interface
+content-type: application/json
+
+{
+    "coap_server_ip" : "{{coap_server_ip}}",
+    "coap_server_port" : {{coap_server_port}},
+    "coap_server_resource" : "light",
+    "coap_method" : "put",
+    "coap_payload" : {
+        "light": true
+    }
+}
+
+
+### SEND INVALID COAP REQUEST
+
+PUT {{http_coap_interface_host}}/{{api_prefix}}/interface
+content-type: application/json
+
+{
+    "key": "value"
+}
+
+### SEND INVALID REQUEST (WITHOUT REQUEST BODY)
+
+PUT {{http_coap_interface_host}}/{{api_prefix}}/interface
+
+
+### SEND BAD REQUEST OVER LIGHT RESOURCE
+
+PUT {{http_coap_interface_host}}/{{api_prefix}}/interface
+content-type: application/json
+
+{
+    "coap_server_ip" : "{{coap_server_ip}}",
+    "coap_server_port" : {{coap_server_port}},
+    "coap_server_resource" : "light",
+    "coap_method" : "put",
+    "coap_payload" : "Bad Request Payload"
+}
+
+
+### SEND NOT ALLOWED (POST) REQUEST OVER LIGHT RESOURCE
+
+PUT {{http_coap_interface_host}}/{{api_prefix}}/interface
+content-type: application/json
+
+{
+    "coap_server_ip" : "{{coap_server_ip}}",
+    "coap_server_port" : {{coap_server_port}},
+    "coap_server_resource" : "light",
+    "coap_method" : "post",
+    "coap_payload" : {
+        "light": false
+    }
+}
+
+
+### SEND NOT ALLOWED (DELETE) REQUEST OVER LIGHT RESOURCE
+
+PUT {{http_coap_interface_host}}/{{api_prefix}}/interface
+content-type: application/json
+
+{
+    "coap_server_ip" : "{{coap_server_ip}}",
+    "coap_server_port" : {{coap_server_port}},
+    "coap_server_resource" : "light",
+    "coap_method" : "delete",
+    "coap_payload" : {
+        "light": false
+    }
+}

@@ -6,7 +6,7 @@ from flask import Flask, jsonify
 from flask_restful import Api
 from flask_gzip import Gzip
 
-from config import PORT, ENV, config_get_current_settings_as_list
+from config import PORT, ENV, config_get_current_settings_as_list, API_PREFIX
 from log import error, warn, info, debug
 from http_coap_interface.resources import http_coap_interface_add_http_resources_to_api
 
@@ -80,7 +80,7 @@ def _show_welcome_message():
 def _init_application():
     _show_welcome_message()
     info("Starting to run HTTP-CoAP Interface Service")
-    http_coap_interface_add_http_resources_to_api(flask_restful_api, prefix="/http_coap")
+    http_coap_interface_add_http_resources_to_api(flask_restful_api, prefix=API_PREFIX)
 
 
 _init_application()

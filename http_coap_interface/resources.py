@@ -21,7 +21,6 @@ class HttpCoapInterfaceResource(Resource):
     def put(self):
         if not request.json:
             return generate_invalid_coap_response()
-
         coap_fields = create_coap_fields_from_http_request(**request.json)
         return execute_coap_client_request(**coap_fields)
 
